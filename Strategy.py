@@ -280,15 +280,15 @@ def minimaxLv4(board, color):
     if len(lv2results) == 1:
         result = lv2results[0]
     else:
-        print("Evaluating...")
+        #print("Evaluating...")
         [lv3Results, _] = lv3(board, color, lv2results)
-        print(str(len(lv3Results)), " Option(s):", lv3Results)
+        #print(str(len(lv3Results)), " Option(s):", lv3Results)
         if len(lv3Results) == 1:
             result = lv3Results[0]
         elif len(lv3Results) <= 3:
-            print("Further Evaluating...")
+            #print("Further Evaluating...")
             [lv4Results, _] = lv4(board, color, lv3Results)
-            print(str(len(lv4Results)), " Option(s):", lv4Results)
+            #print(str(len(lv4Results)), " Option(s):", lv4Results)
             result = random.choice(lv4Results)
         else:
             result = random.choice(lv3Results)
@@ -317,92 +317,24 @@ def lv4(board, color, moves):
         scores.append(bestScore)
 
     if decentMoves == []:
-        print("Good Job")
+        #print("Good Job")
         return [[moves[0]], None]
 
     [newMoves, newScore] = optimizeReult(scores, decentMoves, color)
     return [newMoves, newScore]
 
-'''
-def ult(board, color, move):
-    oppoColor = getOppo(color)
-    tempBoard_1 = creatTempBoard(board, move, color)
-    if checkWin(move, tempBoard_1, color):
-        #print("case 1")
-        return True
-    else:
-        #print("case 2")
-        nextMoves = possibleNextMove(tempBoard_1)
-        bol1 = False
-        for nextMove in nextMoves:
-            tempBoard_2 = []
-            tempBoard_2 = creatTempBoard(tempBoard_1, nextMove, oppoColor)
-            bol1 = bol1 or checkWin(nextMove, tempBoard_2, oppoColor)
-            if bol1:
-                return False
-        for nextMove in nextMoves:
-            tempBoard_2 = []
-            tempBoard_2 = creatTempBoard(tempBoard_1, nextMove, oppoColor)
-            bol2 = False
-            for thirdMove in possibleNextMove(tempBoard_2):
-                bol2 = bol2 or ult(tempBoard_2, color, thirdMove)
-                if bol2 == 1:
-                    return True
-            return False
-
-def ulti(board, color, counter = 2):
-    if counter == 0:
-        return [False]    
-    oppoColor = getOppo(color)
-    results = []
-    for move_1 in possibleNextMove(board):
-        tempBoard_1 = creatTempBoard(board, move_1, color)
-        if checkWin(move_1, tempBoard_1, color):
-            results.append(True)
-            continue
-        else:
-            lose = [False]
-            for move_2 in possibleNextMove(tempBoard_1):
-                tempBoard_2 = creatTempBoard(tempBoard_1, move_2, oppoColor)
-                lose.append(checkWin(move_2, tempBoard_2, oppoColor))
-            if any(lose):
-                results.append(False)
-                continue
-            for move_2 in possibleNextMove(tempBoard_1):
-                tempBoard_2 = creatTempBoard(tempBoard_1, move_2, oppoColor)
-                results.append(any(ulti(tempBoard_2, color, counter - 1)))
-                continue
-    return results
-
-def minimaxLv4(board, color):
-    moves = possibleNextMove(board)
-    if any(ulti(board, color)):
-        move = moves[ulti.index(True)]
-    else:
-        print("I surrender")
-        move = moves[0]
-
-    print(move)
-    if color == "O":
-        board = whiteTurn(board, move)
-    else:
-        board = blackTurn(board, move)
-    
-    return board
-'''
-
 
 def minimaxLv3(board, color):
     moves = possibleNextMove(board)
     [results, _] = lv2(board, color, moves)
-    print(str(len(results)), " Option(s):", results)
+    #print(str(len(results)), " Option(s):", results)
 
     if len(results) == 1:
         result = results[0]
     else:
-        print("Further Evaluating...")
+        #print("Further Evaluating...")
         [newResult, _] = lv3(board, color, results)
-        print(str(len(newResult)), " Option(s):", newResult)
+        #print(str(len(newResult)), " Option(s):", newResult)
         result = random.choice(newResult)
 
     print(result)
@@ -465,7 +397,7 @@ def lv2(board, color, moves):
         decentMoves.append(move)
 
     if scores == []:
-        print("Good Game")
+        #print("Good Game")
         return [[moves[0]], None]
 
     [results, bestScore] = optimizeReult(scores, decentMoves, color)
@@ -498,29 +430,29 @@ def lv1(board, color):
 def zero(board, color):
     moves = possibleNextMove(board)
     [results, _] = lv2(board, color, moves)
-    print(str(len(results)), " Option(s):", results)
+    #print(str(len(results)), " Option(s):", results)
 
     if len(results) == 1:
         result = results[0]
     else:
-        print("Further Evaluating...")
+        #print("Further Evaluating...")
         [newResults, _] = lv3(board, color, results)
-        print(str(len(newResults)), " Option(s):", newResults)
+        #print(str(len(newResults)), " Option(s):", newResults)
         if len(newResults) < len(results):
             result = random.choice(newResults)
         else:
-            print("Evaluate from the opponent's pespective:")
+            #print("Evaluate from the opponent's pespective:")
             oppoResults = rezero(board, color)
-            print("Opponent is likely to have", len(oppoResults), "option(s):", oppoResults)
+            #print("Opponent is likely to have", len(oppoResults), "option(s):", oppoResults)
             commonResults = []
             for a in oppoResults:
                 if a in newResults:
                     commonResults.append(a)
             if commonResults:
-                print(len(commonResults), "Options in Common:", commonResults)
+                #print(len(commonResults), "Options in Common:", commonResults)
                 result = random.choice(commonResults)
             else:
-                print("No common options.")
+                #print("No common options.")
                 if len(newResults) < len(oppoResults):
                     result = random.choice(newResults)
                 else:
@@ -538,10 +470,10 @@ def rezero(board, color):
     oppoColor = getOppo(color)
     moves = possibleNextMove(board)
     [results, _] = lv2(board, oppoColor, moves)
-    print("LV2 Options:", results)
+    #print("LV2 Options:", results)
     if len(results) == 1:
         return results
     else:
         [newResults, _] = lv3(board, oppoColor, results)
-        print("LV3 Options:", newResults)
+        #print("LV3 Options:", newResults)
         return newResults
